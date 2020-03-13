@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/rabbitmq-apidempotent/rabbitmq-apidempotent.iml" filepath="$PROJECT_DIR$/rabbitmq-apidempotent/rabbitmq-apidempotent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rabbitmq-apidempotent/token-authenticate.iml" filepath="$PROJECT_DIR$/rabbitmq-apidempotent/token-authenticate.iml" />
     </modules>
   </component>
 </project>
