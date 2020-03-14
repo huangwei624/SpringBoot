@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="rabbitmq-apidempotent" />
+        <module name="token-authenticate" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="rabbitmq-apidempotent" target="1.8" />
+      <module name="token-authenticate" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
