@@ -7,6 +7,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+// 固定的routingKey, 路由模式
 // direct 类型的交换器
 @Configuration
 public class DirectConfig {

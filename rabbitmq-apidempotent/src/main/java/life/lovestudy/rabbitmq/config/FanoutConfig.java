@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
 
+// 发布订阅
 @Configuration
 public class FanoutConfig {
 	private final String EMAIL_QUEUE_NAME="boot_email_queue";
