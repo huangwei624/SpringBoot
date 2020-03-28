@@ -14,6 +14,8 @@ public class DirectConfig {
 	private final String TEST_QUEUE_NAME = "test_queue";
 	private final String TEST_EXCHANGE_NAME = "test_exchange";
 	
+	
+	
 	@Bean
 	public Queue testQueue(){
 		return new Queue(TEST_QUEUE_NAME);
