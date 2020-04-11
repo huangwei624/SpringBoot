@@ -9,20 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -39,6 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	private SysUserService sysUserService;
 	
 	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
 	public LoginFilter loginFilter() throws Exception {
 		LoginFilter loginFilter = new LoginFilter();
 		// 认证失败处理
@@ -48,40 +54,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 			                                    AuthenticationException e) throws IOException, ServletException {
 				ResultVO resultVO = new ResultVO();
 				if(e instanceof VerifyCodeErrorException){  // 验证码不正确
-					resultVO.setResponseCode(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
+					resultVO.setStatus(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
 					resultVO.setMessage("验证码不正确");
 				}else if (e instanceof LockedException) {   // 账号被锁定
-					resultVO.setResponseCode(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
+					resultVO.setStatus(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
 					resultVO.setMessage("账号被锁定，请联系管理员");
 				} else if (e instanceof AccountExpiredException) {  // 账户已过期
-					resultVO.setResponseCode(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
+					resultVO.setStatus(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
 					resultVO.setMessage("账户已过期，请联系管理员");
 				}else if (e instanceof BadCredentialsException) {  // 用户名密码不正确
-					resultVO.setResponseCode(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
+					resultVO.setStatus(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
 					resultVO.setMessage("用户名密码不正确");
 				}
-				response.setContentType("application/json;charset=utf-8");
-				String origin = request.getHeader("Origin");
-				if (origin != null) {
-					response.setHeader("Access-Control-Allow-Origin", origin);
-				}
-				response.setHeader("Access-Control-Allow-Credentials", "true");
-				try {
-					PrintWriter writer = response.getWriter();
-					writer.write(new ObjectMapper().writeValueAsString(resultVO));
-					writer.flush();
-					writer.close();
-				} catch (IOException ioe) {
-					e.printStackTrace();
-				}
+				setSingleCors(request, response);
+				// 向客服端写登录失败数据
+				writeJson(response, resultVO);
 			}
 		});
 		// 认证成功处理
 		loginFilter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
 			@Override
-			public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
-			                                    HttpServletResponse httpServletResponse,
+			public void onAuthenticationSuccess(HttpServletRequest request,
+			                                    HttpServletResponse response,
 			                                    Authentication authentication) throws IOException, ServletException {
+				
+				// 设置跨域，这里不知道为什么统一设置的跨域没有起到作用
+				setSingleCors(request, response);
+				ResultVO resultVO = new ResultVO(ResponseCodeEnum.SUCCESS.getCode(), "登录成功", authentication);
+				// 向客服端写登录成功数据
+				writeJson(response, resultVO);
 			}
 		});
 		loginFilter.setAuthenticationManager(authenticationManagerBean());
@@ -96,7 +97,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(sysUserService);
+		auth.inMemoryAuthentication().withUser("admin")
+				.password(passwordEncoder().encode("123456")).roles();
+		//auth.userDetailsService(sysUserService);
 	}
 	
 	@Override
@@ -106,7 +109,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
+		// 注销逻辑
+		http.logout().logoutUrl("/doLogout").logoutSuccessHandler(new LogoutSuccessHandler() {
+			@Override
+			public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+			                            Authentication authentication) throws IOException, ServletException {
+				// 设置跨域，这里不知道为什么统一设置的跨域没有起到作用
+				setSingleCors(request, response);
+				ResultVO resultVO = new ResultVO(ResponseCodeEnum.SUCCESS.getCode(), "注销成功", null);
+				// 向客服端写登录成功数据
+				writeJson(response, resultVO);
+			}
+		})
+				.and().csrf().disable();
 		http.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
@@ -124,5 +139,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 				.allowedHeaders("*")
 				.allowedMethods("*")
 				.allowedOrigins(vueServeUrl);
+	}
+	
+	// 单独为某个请求设置跨域访问
+	private void setSingleCors(HttpServletRequest request, HttpServletResponse response){
+		response.setContentType("application/json;charset=utf-8");
+		String origin = request.getHeader("Origin");
+		if (origin != null) {
+			response.setHeader("Access-Control-Allow-Origin", origin);
+		}
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+	}
+	
+	// 向客服端响应json数据
+	private void writeJson(HttpServletResponse response, Object data){
+		try {
+			PrintWriter writer = response.getWriter();
+			writer.write(new ObjectMapper().writeValueAsString(data));
+			writer.flush();
+			writer.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 }

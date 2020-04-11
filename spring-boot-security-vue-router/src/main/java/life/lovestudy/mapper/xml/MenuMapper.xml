@@ -16,4 +16,35 @@
         values (#{name}, #{path}, #{component}, #{iconClz}, #{parentId}, #{isEnable}, #{meta.keepAlive}, #{meta.requireAuth})
     </insert>
 
+    <select id="getAllMenu" resultMap="menuMateMap">
+        SELECT m1.*, m2.name as parentName
+        from menu m1 LEFT JOIN menu m2 on m1.parent_id = m2.id
+    </select>
+
+    <select id="getParentMenu" resultType="Menu">
+        SELECT m1.id, m1.name
+        from menu m1
+        where m1.parent_id = 0
+    </select>
+
+    <update id="updateMenu" parameterType="Menu">
+        update menu
+        set name=#{name}, path=#{path}, component=#{component}, icon_clz=#{iconClz}, parent_id=#{parentId}, is_enable=#{isEnable}
+                ,keep_alive=#{meta.keepAlive}, require_auth=#{meta.requireAuth}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteById" >
+        delete from menu where id=#{id}
+    </delete>
+
+    <!--autoMapping 这个属性可以帮助我们自动映射一些符合规范的属性，不需要我们每个都手动映射了-->
+    <resultMap id="menuMateMap" type="MenuVO" autoMapping="true">
+        <association property="meta">
+            <result column="keep_alive" property="keepAlive"></result>
+            <result column="require_auth" property="requireAuth"></result>
+        </association>
+    </resultMap>
+
+
 </mapper>

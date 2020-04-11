@@ -1,7 +1,10 @@
-package life.lovestudy.entity;
+package life.lovestudy.vo;
 
-// 对应vue 的路由
-public class Menu {
+import life.lovestudy.entity.Menu;
+import life.lovestudy.entity.Meta;
+import org.springframework.beans.BeanUtils;
+
+public class MenuVO {
 	
 	private int id;
 	private String name;    // 当前路由所具备的业务意义，比如说 /per/train 代表着“员工培训”，这里的员工培训就是name值
@@ -9,6 +12,7 @@ public class Menu {
 	private String component;   // 路由所对应的组件名称 PerTrain
 	private String iconClz;     // 路由图标的 class 样式 “fa fa-user-circle-o”
 	private int parentId;   // 当前路由的父亲路由
+	private String parentName;   // 当前路由的父亲路由
 	private boolean isEnable;   // 当前路由是否被禁用
 	private Meta meta;  //  路由元数据
 	
@@ -58,6 +62,14 @@ public class Menu {
 	
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
+	}
+	
+	public String getParentName() {
+		return parentName;
+	}
+	
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 	
 	public boolean getIsEnable() {

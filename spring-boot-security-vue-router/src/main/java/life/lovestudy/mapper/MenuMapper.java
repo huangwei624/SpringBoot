@@ -1,6 +1,7 @@
 package life.lovestudy.mapper;
 
 import life.lovestudy.entity.Menu;
+import life.lovestudy.vo.MenuVO;
 
 import java.util.List;
 
@@ -11,6 +12,27 @@ public interface MenuMapper {
 	 * @return
 	 */
 	int saveOne(Menu menu);
+	
+	/**
+	 * 获取所有的Menu
+	 * @return
+	 */
+	List<MenuVO> getAllMenu();
+	
+	/**
+	 * 获取所有的父菜单
+	 * @return
+	 */
+	List<Menu> getParentMenu();
+	
+	/**
+	 * 修改
+	 * @param menu
+	 * @return
+	 */
+	int updateMenu(Menu menu);
+	
+	int deleteById(int id);
 	
 	/**
 	 * 根据角色id获取Menu信息
