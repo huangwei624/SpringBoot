@@ -35,6 +35,14 @@ public interface MenuMapper {
 	int deleteById(int id);
 	
 	/**
+	 * 通过角色id获取menu
+	 * @return
+	 */
+	List<MenuVO> getAllMenuByRoleId(int roleId);
+	
+	Menu getById(int id);
+	
+	/**
 	 * 根据角色id获取Menu信息
 	 * @param roleId
 	 * @return

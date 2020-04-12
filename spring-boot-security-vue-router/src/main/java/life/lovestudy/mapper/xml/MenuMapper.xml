@@ -21,6 +21,16 @@
         from menu m1 LEFT JOIN menu m2 on m1.parent_id = m2.id
     </select>
 
+    <select id="getById" resultType="Menu">
+        select * from menu where id=#{id}
+    </select>
+
+    <select id="getAllMenuByRoleId" resultType="MenuVO">
+        select m.id, m.name, m.parent_id
+        from role r, role_menu rm, menu m
+        where r.id=rm.role_id and rm.menu_id=m.id and r.id=#{roleId};
+    </select>
+
     <select id="getParentMenu" resultType="Menu">
         SELECT m1.id, m1.name
         from menu m1

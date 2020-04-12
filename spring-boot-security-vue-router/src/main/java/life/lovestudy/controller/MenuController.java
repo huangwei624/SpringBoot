@@ -3,6 +3,7 @@ package life.lovestudy.controller;
 import life.lovestudy.entity.Menu;
 import life.lovestudy.service.MenuService;
 import life.lovestudy.utils.ResponseCodeEnum;
+import life.lovestudy.utils.TreeMenu;
 import life.lovestudy.vo.MenuVO;
 import life.lovestudy.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,16 @@ public class MenuController {
 	public ResultVO list(){
 		List<MenuVO> allMenu = menuService.getAllMenu();
 		return new ResultVO(ResponseCodeEnum.SUCCESS.getCode(), "查询成功", allMenu);
+	}
+	
+	/**
+	 * 获取树形关系的 menu 层级数据
+	 * @return
+	 */
+	@GetMapping("/treeMenu")
+	public ResultVO treeMenu(){
+		List<TreeMenu> treeMenus = menuService.treeMenu();
+		return new ResultVO(ResponseCodeEnum.SUCCESS.getCode(), "查询成功", treeMenus);
 	}
 	
 	@PostMapping("/save")
