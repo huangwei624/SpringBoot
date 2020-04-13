@@ -2,4 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="life.lovestudy.mapper.UserMapper" >
 
+    <sql id="getUserSql1">
+        select u.*, r.*, m.*, r.name as role_name, m.name as menu_name, u.id as user_id, r.id as role_id, m.id as menu_id
+        from user u, role r, menu m, user_role ur, role_menu rm
+        where u.id=ur.user_id and r.id=ur.role_id and r.id=rm.role_id and m.id=rm.menu_id
+    </sql>
+
+    <select id="getAllUsers" resultMap="userRoleMenu">
+        <include refid="getUserSql1" ></include>
+    </select>
+
+    <select id="loadUserByUsername" resultMap="userRoleMenu">
+        <include refid="getUserSql1"></include> and username = #{username}
+    </select>
+
+    <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into `user` (username, `password`)
+        values (#{username}, #{password})
+    </insert>
+
+    <resultMap id="userRoleMenu" type="User" autoMapping="true">
+        <result property="id" column="user_id"></result>
+        <collection property="roles" ofType="Role" autoMapping="true">
+            <result column="role_id" property="id"></result>
+            <result column="role_name" property="name"></result>
+            <collection property="menus"  ofType="Menu" autoMapping="true">
+                <result column="menu_id" property="id"></result>
+                <result column="menu_name" property="name"></result>
+                <association property="meta" autoMapping="true"></association>
+            </collection>
+        </collection>
+    </resultMap>
+
 </mapper>

@@ -12,6 +12,10 @@
         insert into role(name, description) values (#{name}, #{description})
     </insert>
 
+    <insert id="saveUserRole" parameterType="UserRole">
+        insert into user_role (user_id, role_id) values (#{userId}, #{roleId})
+    </insert>
+
     <select id="getAll" resultType="Role">
         select id, description from role;
     </select>
@@ -19,7 +23,7 @@
     <select id="getMenuIdByRoleId" resultType="Integer">
         select m.id
         from role r, role_menu rm, menu m
-        where r.id=rm.role_id and rm.menu_id=m.id and r.id=#{roleId}
+        where r.id=rm.role_id and rm.menu_id=m.id and r.id=#{roleId} and m.parent_id != 0
     </select>
 
     <delete id="deleteById">

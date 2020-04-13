@@ -3,6 +3,7 @@ package life.lovestudy.service.impl;
 import life.lovestudy.entity.Menu;
 import life.lovestudy.entity.Role;
 import life.lovestudy.entity.RoleMenu;
+import life.lovestudy.entity.UserRole;
 import life.lovestudy.mapper.MenuMapper;
 import life.lovestudy.mapper.RoleMapper;
 import life.lovestudy.service.MenuService;
@@ -81,8 +82,18 @@ public class RoleServiceImpl implements RoleService {
 	 * @return
 	 */
 	@Override
-	public Integer[] getMenuIdByRoleId(int roleId) {
+	public int[] getMenuIdByRoleId(int roleId) {
 		return roleMapper.getMenuIdByRoleId(roleId);
+	}
+	
+	/**
+	 * 增加user role 关系
+	 * @param userRole
+	 * @return
+	 */
+	@Override
+	public int updateUserRole(UserRole userRole) {
+		return roleMapper.saveUserRole(userRole);
 	}
 	
 }

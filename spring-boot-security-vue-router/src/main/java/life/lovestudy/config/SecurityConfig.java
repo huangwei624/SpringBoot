@@ -65,6 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 				}else if (e instanceof BadCredentialsException) {  // 用户名密码不正确
 					resultVO.setStatus(ResponseCodeEnum.VERIFY_CODE_ERROR.getCode());
 					resultVO.setMessage("用户名密码不正确");
+				}else {
+					resultVO.setStatus(ResponseCodeEnum.NON_ERROR.getCode());
+					resultVO.setMessage(e.getMessage());
 				}
 				setSingleCors(request, response);
 				// 向客服端写登录失败数据
@@ -97,9 +100,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin")
-				.password(passwordEncoder().encode("123456")).roles();
-		//auth.userDetailsService(sysUserService);
+//		auth.inMemoryAuthentication().withUser("admin")
+//				.password(passwordEncoder().encode("123456")).roles();
+		auth.userDetailsService(sysUserService);
 	}
 	
 	@Override

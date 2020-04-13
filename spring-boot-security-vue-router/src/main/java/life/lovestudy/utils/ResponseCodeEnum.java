@@ -7,7 +7,7 @@ public enum  ResponseCodeEnum {
 	VERIFY_CODE_ERROR(100, "验证码错误"),
 	ACCOUNT_LOCKED(101, "账户被锁定"),
 	ACCOUNT_EXPIRE(102, "账户已过期"),
-	
+	NON_ERROR(150, "未知错误"),
 	;
 	
 	private int code;

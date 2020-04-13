@@ -2,6 +2,8 @@ package life.lovestudy.mapper;
 
 import life.lovestudy.entity.User;
 
+import java.util.List;
+
 public interface UserMapper {
 	
 	/**
@@ -11,5 +13,10 @@ public interface UserMapper {
 	 */
 	User findById(Integer id);
 	
-
+	
+	List<User> getAllUsers();
+	
+	int saveUser(User user);
+	
+	User loadUserByUsername(String username);
 }

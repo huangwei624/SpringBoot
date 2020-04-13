@@ -2,6 +2,7 @@ package life.lovestudy.mapper;
 
 import life.lovestudy.entity.Role;
 import life.lovestudy.entity.RoleMenu;
+import life.lovestudy.entity.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,9 @@ public interface RoleMapper {
 	 * 获取MenuId 数组
 	 * @return
 	 */
-	Integer[] getMenuIdByRoleId(int roleId);
+	int[] getMenuIdByRoleId(int roleId);
+	
+	int saveUserRole(UserRole userRole);
 	
 	/**
 	 * 根据用户id获取角色信息

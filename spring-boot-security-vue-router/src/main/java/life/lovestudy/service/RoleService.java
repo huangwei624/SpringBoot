@@ -1,6 +1,7 @@
 package life.lovestudy.service;
 
 import life.lovestudy.entity.Role;
+import life.lovestudy.entity.UserRole;
 
 import java.util.List;
 
@@ -29,5 +30,12 @@ public interface RoleService {
 	 * @param roleId
 	 * @return
 	 */
-	Integer[] getMenuIdByRoleId(int roleId);
+	int[] getMenuIdByRoleId(int roleId);
+	
+	/**
+	 * 增加user role 关系
+	 * @param userRole
+	 * @return
+	 */
+	int updateUserRole(UserRole userRole);
 }

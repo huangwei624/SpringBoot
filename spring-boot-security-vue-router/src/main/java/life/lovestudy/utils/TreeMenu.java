@@ -7,7 +7,17 @@ public class TreeMenu {
 	
 	private int id;
 	private String name;
+	private String path;
+	private String iconClz;
 	private List<TreeMenu> children;  // 子菜单
+	
+	public String getIconClz() {
+		return iconClz;
+	}
+	
+	public void setIconClz(String iconClz) {
+		this.iconClz = iconClz;
+	}
 	
 	public int getId() {
 		return id;
@@ -19,6 +29,14 @@ public class TreeMenu {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getPath() {
+		return path;
+	}
+	
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 	public void setName(String name) {

@@ -91,6 +91,8 @@ public class MenuServiceImpl implements MenuService {
 				TreeMenu treeMenu = new TreeMenu();
 				treeMenu.setId(menuvo.getId());
 				treeMenu.setName(menuvo.getName());
+				treeMenu.setPath(menuvo.getPath());
+				treeMenu.setIconClz(menuvo.getIconClz());
 				ArrayList<TreeMenu> children = new ArrayList<>();
 				for (MenuVO menuvo2 : allMenu) {      // 给父菜单找所有的子菜单
 					if (menuvo2.getId() != menuvo.getId()) {
@@ -98,6 +100,8 @@ public class MenuServiceImpl implements MenuService {
 							TreeMenu treeMenu2 = new TreeMenu();
 							treeMenu2.setId(menuvo2.getId());
 							treeMenu2.setName(menuvo2.getName());
+							treeMenu2.setPath(menuvo2.getPath());
+							treeMenu2.setIconClz(menuvo2.getIconClz());
 							children.add(treeMenu2);
 						}
 					}

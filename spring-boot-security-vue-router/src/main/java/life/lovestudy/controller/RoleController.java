@@ -66,7 +66,7 @@ public class RoleController {
 	
 	@GetMapping("/getMenuIdByRoleId")
 	public ResultVO getMenuIdByRoleId(int roleId){
-		Integer[] menuIdByRoleId = roleService.getMenuIdByRoleId(roleId);
+		int[] menuIdByRoleId = roleService.getMenuIdByRoleId(roleId);
 		return new ResultVO(ResponseCodeEnum.SUCCESS.getCode(), "查询成功", menuIdByRoleId);
 	}
 	

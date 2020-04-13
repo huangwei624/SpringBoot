@@ -11,8 +11,8 @@ public class User implements UserDetails {
 	private int id;
 	private String username;
 	private String password;
-	private Boolean isLock; // 账号是否锁定
-	private Boolean isExpired; // 账号是否过期
+	private Boolean nonLock = true; // 账号是否锁定
+	private Boolean nonExpired = true; // 账号是否过期
 	private List<Role> roles;   // 当前用户的所有角色
 	
 	@Override
@@ -36,7 +36,7 @@ public class User implements UserDetails {
 	 */
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.isExpired;
+		return this.nonExpired;
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class User implements UserDetails {
 	 */
 	@Override
 	public boolean isAccountNonLocked() {
-		return this.isLock;
+		return this.nonLock;
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class User implements UserDetails {
 	 */
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return false;
+		return true;
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class User implements UserDetails {
 	 */
 	@Override
 	public boolean isEnabled() {
-		return false;
+		return true;
 	}
 	
 	public void setUsername(String username) {
@@ -74,20 +74,20 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 	
-	public Boolean getLock() {
-		return isLock;
+	public Boolean getNonLock() {
+		return nonLock;
 	}
 	
-	public void setLock(Boolean lock) {
-		isLock = lock;
+	public void setNonLock(Boolean nonLock) {
+		this.nonLock = nonLock;
 	}
 	
-	public Boolean getExpired() {
-		return isExpired;
+	public Boolean getNonExpired() {
+		return nonExpired;
 	}
 	
-	public void setExpired(Boolean expired) {
-		isExpired = expired;
+	public void setNonExpired(Boolean nonExpired) {
+		this.nonExpired = nonExpired;
 	}
 	
 	public List<Role> getRoles() {
