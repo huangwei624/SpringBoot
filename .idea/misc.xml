@@ -6,6 +6,7 @@
         <option value="$PROJECT_DIR$/rabbitmq-apidempotent/pom.xml" />
         <option value="$PROJECT_DIR$/token-authenticate/pom.xml" />
         <option value="$PROJECT_DIR$/spring-boot-security-vue-router/pom.xml" />
+        <option value="$PROJECT_DIR$/springboot-durid-actuator/pom.xml" />
       </list>
     </option>
   </component>

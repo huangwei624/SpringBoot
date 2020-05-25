@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/rabbitmq-apidempotent" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-security-vue-router" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springboot-durid-actuator" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/token-authenticate" charset="UTF-8" />
   </component>
 </project>

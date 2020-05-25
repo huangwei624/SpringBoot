@@ -6,15 +6,25 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="rabbitmq-apidempotent" />
         <module name="spring-boot-security-vue-router" />
         <module name="token-authenticate" />
+        <module name="rabbitmq-apidempotent" />
+        <module name="springboot-durid-actuator" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="rabbitmq-apidempotent" target="1.8" />
       <module name="spring-boot-security-vue-router" target="1.8" />
+      <module name="springboot-durid-actuator" target="1.8" />
       <module name="token-authenticate" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="rabbitmq-apidempotent" options="-parameters" />
+      <module name="spring-boot-security-vue-router" options="-parameters" />
+      <module name="springboot-durid-actuator" options="-parameters" />
+      <module name="token-authenticate" options="-parameters" />
+    </option>
   </component>
 </project>

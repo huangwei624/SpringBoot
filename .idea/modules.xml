@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/rabbitmq-apidempotent/rabbitmq-apidempotent.iml" filepath="$PROJECT_DIR$/rabbitmq-apidempotent/rabbitmq-apidempotent.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-security-vue-router/spring-boot-security-vue-router.iml" filepath="$PROJECT_DIR$/spring-boot-security-vue-router/spring-boot-security-vue-router.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot-durid-actuator/springboot-durid-actuator.iml" filepath="$PROJECT_DIR$/springboot-durid-actuator/springboot-durid-actuator.iml" />
       <module fileurl="file://$PROJECT_DIR$/token-authenticate/token-authenticate.iml" filepath="$PROJECT_DIR$/token-authenticate/token-authenticate.iml" />
     </modules>
   </component>
